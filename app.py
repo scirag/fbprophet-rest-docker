@@ -36,6 +36,11 @@ class MainHandler(tornado.web.RequestHandler):
                 self.write("ds vs. y array size mismatch!")
                 return
 
+            periods = 365
+            if ("periods" in params_json) and (isinstance(params_json["periods"], int)):
+                periods = params_json["periods"]
+
+
             df = pd.DataFrame({'ds': ds, 'y': y})
             m = Prophet()
             m.fit(df)
@@ -48,7 +53,6 @@ class MainHandler(tornado.web.RequestHandler):
                 "yhat_lower": [row[3] for row in f],
                 "yhat_upper": [row[4] for row in f]
             }
-            print(result)
             result = json.dumps(result, cls=DateTimeEncoder)
             self.write(result)
         else:
@@ -56,8 +60,9 @@ class MainHandler(tornado.web.RequestHandler):
 
     def get(self):
         sample = {
+            "periods": 3,
             "ds": ["2007-12-10","2007-12-11","2007-12-12","2007-12-13","2007-12-14"],
-            "y": [9.59076113897809, 8.51959031601596, 8.18367658262066, 8.07246736935477, 7.8935720735049]
+            "y": [9.59076113897809, 9.51959031601596, 9.18367658262066, 9.07246736935477, 9.0935720735049]
         }
         self.write(json.dumps({
             "service": "fbprophet-rest",

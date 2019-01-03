@@ -62,7 +62,7 @@ class MainHandler(tornado.web.RequestHandler):
         self.write(json.dumps({
             "service": "fbprophet-rest",
             "version": "0.3.post2",
-            "help": "curl '%s' -H \"Content-Type: application/json\" -X POST http://localhost:80/" % json.dumps(sample)
+            "help": "curl '-d %s' -H \"Content-Type: application/json\" -X POST http://localhost:80/" % json.dumps(sample)
         }))
 
 def make_app():

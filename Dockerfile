@@ -1,5 +1,9 @@
 FROM safakcirag/fbprophet
 
-COPY . .
+RUN mkdir /service
 
-RUN python app.py
+COPY . /service
+
+EXPOSE 80
+
+CMD python /service/app.py
